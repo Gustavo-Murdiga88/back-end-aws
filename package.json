@@ -1,0 +1,25 @@
+{
+  "name": "back-end-aws",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch --no-warnings --env-file=.env src/server.ts",
+    "build": "tsup-node src/server.ts --out-dir dist --format cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.11",
+    "tsx": "^4.9.4",
+    "typescript": "^5.4.5",
+    "fastify-type-provider-zod": "^1.1.9"
+  },
+  "dependencies": {
+    "@fastify/multipart": "^8.2.0",
+    "aws-sdk": "^2.1618.0",
+    "fastify": "^4.27.0",
+    "zod": "^3.23.8"
+  }
+}
