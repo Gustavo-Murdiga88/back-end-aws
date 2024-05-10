@@ -11,6 +11,6 @@ app.setSerializerCompiler(serializerCompiler);
 app.register(fastifyMultipart)
 app.register(FilesRoute)
 
-app.listen({ port: Number(process.env.PORT) ?? 3000 }).then(() => {
+app.listen({ port: Number(process.env.PORT || 3333) }).then(() => {
   console.log("HTTP server running on port 3333")
 });
