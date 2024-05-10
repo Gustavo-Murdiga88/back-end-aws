@@ -12,9 +12,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.12.11",
+    "fastify-type-provider-zod": "^1.1.9",
+    "tsup": "^8.0.2",
     "tsx": "^4.9.4",
-    "typescript": "^5.4.5",
-    "fastify-type-provider-zod": "^1.1.9"
+    "typescript": "^5.4.5"
   },
   "dependencies": {
     "@fastify/multipart": "^8.2.0",
