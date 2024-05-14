@@ -7,9 +7,6 @@ import swaggerUI from "@fastify/swagger-ui";
 
 export const app = fastify({
   logger: false,
-  ajv: {
-    plugins: [require('@fastify/multipart').ajvFilePlugin]
-  }
 });
 
 
@@ -17,10 +14,7 @@ export const app = fastify({
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
-app.register(fastifyMultipart, {
-  attachFieldsToBody: true,
-  sharedSchemaId: "#fastify-multipart",
-})
+app.register(fastifyMultipart)
 
 app.register(swagger, {
   openapi: {

@@ -2,8 +2,6 @@ import { FastifyInstance } from "fastify";
 import { client } from "../lib/aws";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
-import { format } from "path";
-
 
 export async function FilesRoute(app: FastifyInstance) {
 
@@ -18,11 +16,10 @@ export async function FilesRoute(app: FastifyInstance) {
       }),
       consumes: ["multipart/form-data"],
       body: z.object({
-        file: z.instanceof(Buffer),
-      }),
+        file: z.instanceof(Buffer)
+      })
     },
     handler: async (request, reply) => {
-      console.log(request.params)
       const data = await request.file();
 
       if (!data) {
