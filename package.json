@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch --no-warnings --env-file=.env src/server.ts",
-    "build": "tsup-node src/server.ts --out-dir dist --format cjs"
+    "build": "tsup-node src/server.ts --out-dir dist --format cjs",
+    "start": "node --no-warnings --env-file=.env dist/server.js"
   },
   "keywords": [],
   "author": "",
