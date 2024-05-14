@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { client } from "../lib/aws";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
+import { Multipart } from "@fastify/multipart"
 
 export async function FilesRoute(app: FastifyInstance) {
 
@@ -15,9 +16,7 @@ export async function FilesRoute(app: FastifyInstance) {
         filename: z.string(),
       }),
       consumes: ["multipart/form-data"],
-      body: z.object({
-        file: z.instanceof(Buffer)
-      })
+      body: z.custom<Multipart>()
     },
     handler: async (request, reply) => {
       const data = await request.file();
