@@ -1,31 +1,37 @@
-import fastify from "fastify"
+import fastify from "fastify";
 import { FilesRoute } from "./routes/files";
 import fastifyMultipart from "@fastify/multipart";
 import { serializerCompiler, validatorCompiler, jsonSchemaTransform } from "fastify-type-provider-zod";
 import swagger from "@fastify/swagger";
 import swaggerUI from "@fastify/swagger-ui";
+import { normalizeFileFields } from "./util/normalized-schema";
 
 export const app = fastify({
   logger: false,
 });
 
-
-
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
-app.register(fastifyMultipart)
+app.register(fastifyMultipart, {
+  attachFieldsToBody: "keyValues",
+},
+);
 
 app.register(swagger, {
   openapi: {
     info: {
       title: "AWS back-end",
-      version: "1.0.0",
+      version: "3.0.0",
       description: "This is one back-end create for help me and dudu going to send images to CloudFlare or AWS",
     },
     servers: [],
   },
-  transform: jsonSchemaTransform,
+  transform: (data) => {
+    const jsonSchema = jsonSchemaTransform(data);
+    normalizeFileFields(jsonSchema.schema);
+    return jsonSchema;
+  },
 })
 app.register(swaggerUI, {
   routePrefix: "/aws-docs",

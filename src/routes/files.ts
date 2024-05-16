@@ -2,35 +2,35 @@ import { FastifyInstance } from "fastify";
 import { client } from "../lib/aws";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
-import { Multipart } from "@fastify/multipart"
+import { MultipartFile } from "@fastify/multipart";
 
 export async function FilesRoute(app: FastifyInstance) {
 
   app.withTypeProvider<ZodTypeProvider>().route({
     method: "POST",
-    url: "/files/:filename",
+    url: "/files/:bucket/:filename",
     schema: {
       tags: ["Upload"],
-      summary: 'Delete a file from CloudFlare R2 or AWS',
+      summary: 'Insert a file from CloudFlare R2 or AWS',
       params: z.object({
         filename: z.string(),
+        bucket: z.string(),
       }),
       consumes: ["multipart/form-data"],
-      body: z.custom<Multipart>()
+      body: z.custom<MultipartFile>(),
     },
     handler: async (request, reply) => {
-      const data = await request.file();
+      const data = request.body;
 
-      if (!data) {
+      if (!data.file) {
         return reply.status(400).send({
           message: "Please send a file"
         })
       }
 
-
-      const buffer = await data.toBuffer();
+      const buffer = data.file;
       await client.putObject({
-        Bucket: process.env.BUCKET_NAME,
+        Bucket: request.params.bucket,
         Key: request.params.filename,
         Body: buffer,
       }).promise();
@@ -42,18 +42,19 @@ export async function FilesRoute(app: FastifyInstance) {
 
   app.withTypeProvider<ZodTypeProvider>().route({
     method: "DELETE",
-    url: "/file/:filename/delete",
+    url: "/file/:bucket/:filename/delete",
     schema: {
       tags: ["Upload"],
       summary: 'Delete a file from CloudFlare R2 or AWS',
       params: z.object({
-        filename: z.string()
+        filename: z.string(),
+        bucket: z.string(),
       })
     },
     handler: async (request, reply) => {
       const filename = request.params.filename;
       const response = await client.deleteObject({
-        Bucket: process.env.BUCKET_NAME,
+        Bucket: request.params.bucket,
         Key: filename,
       }).promise();
 
