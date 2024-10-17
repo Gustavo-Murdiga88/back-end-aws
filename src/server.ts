@@ -15,6 +15,9 @@ app.setSerializerCompiler(serializerCompiler);
 
 app.register(fastifyMultipart, {
   attachFieldsToBody: "keyValues",
+  limits: {
+    fileSize: process.env.MAX_SIZE_FILE * 1024 * 1024,
+  }
 },
 );
 

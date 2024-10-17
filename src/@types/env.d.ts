@@ -4,5 +4,6 @@ namespace NodeJS {
     R2_PATH: string;
     ACCESS_KEY_ID: string;
     ACCESS_KEY: string;
+    MAX_SIZE_FILE: number;
   }
 };
